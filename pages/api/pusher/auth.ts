@@ -11,7 +11,7 @@ export default async function handler(
   const session = await getServerSession(request, response, authOptions);
 
   if (!session?.user?.email) {
-    return response.status(401);
+    return response.status(401).json({ error: "Unauthorized access" });
   }
 
   const socketId = request.body.socket_id;
@@ -20,6 +20,6 @@ export default async function handler(
     user_id: session.user.email,
   };
 
-  const authResponse = pusherServer.authorizeChannel(socketId, channel, data);
+  const authResponse = await pusherServer.authorizeChannel(socketId, channel, data);
   return response.send(authResponse);
 };

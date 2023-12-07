@@ -64,7 +64,7 @@ const AuthForm = () => {
           }
 
           if (callback?.ok) {
-            router.push('/api/conversations'); // Check if this route is correct
+            router.push('/conversations'); // Check if this route is correct
           }
         })
         .catch((error) => {
@@ -86,7 +86,8 @@ const AuthForm = () => {
           }
 
           if (callback?.ok) {
-            router.push('/api/conversations'); // Check if this route is correct
+            console.log(new Date());
+            router.push('/conversations'); // Check if this route is correct
           }
         })
         .catch((error) => {
@@ -108,7 +109,7 @@ const AuthForm = () => {
         }
 
         if (callback?.ok) {
-          router.push('/api/conversations')
+          router.push('/conversations')
         }
       })
       .catch((error) => {
