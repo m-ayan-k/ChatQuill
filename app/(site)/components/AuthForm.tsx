@@ -50,43 +50,53 @@ const AuthForm = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
-  
+
     if (variant === 'REGISTER') {
       axios.post('/api/register', data)
-      .then(() => signIn('credentials', {
-        ...data,
-        redirect: false,
-      }))
-      .then((callback) => {
-        if (callback?.error) {
-          toast.error('Invalid credentials!');
-        }
+        .then(() => signIn('credentials', {
+          ...data,
+          redirect: false,
+        }))
+        .then((callback) => {
+          // Check if callback contains error or ok properties
+          if (callback?.error) {
+            toast.error('Invalid credentials!');
+          }
 
-        if (callback?.ok) {
-          router.push('/conversations')
-        }
-      })
-      .catch(() => toast.error('Something went wrong!'))
-      .finally(() => setIsLoading(false))
+          if (callback?.ok) {
+            router.push('/api/conversations'); // Check if this route is correct
+          }
+        })
+        .catch((error) => {
+          console.error('Registration failed:', error);
+          toast.error('Something went wrong!');
+        })
+        .finally(() => setIsLoading(false));
     }
 
     if (variant === 'LOGIN') {
       signIn('credentials', {
         ...data,
-        redirect: false
+        redirect: false,
       })
-      .then((callback) => {
-        if (callback?.error) {
-          toast.error('Invalid credentials!');
-        }
+        .then((callback) => {
+          // Check if callback contains error or ok properties
+          if (callback?.error) {
+            toast.error('Invalid credentials!');
+          }
 
-        if (callback?.ok) {
-          router.push('/conversations')
-        }
-      })
-      .finally(() => setIsLoading(false))
+          if (callback?.ok) {
+            router.push('/api/conversations'); // Check if this route is correct
+          }
+        })
+        .catch((error) => {
+          console.error('Login failed:', error);
+          toast.error('Something went wrong!');
+        })
+        .finally(() => setIsLoading(false));
     }
-  }
+  };
+
 
   const socialAction = (action: string) => {
     setIsLoading(true);
@@ -98,9 +108,13 @@ const AuthForm = () => {
         }
 
         if (callback?.ok) {
-          router.push('/conversations')
+          router.push('/api/conversations')
         }
       })
+      .catch((error) => {
+          console.error('Login failed:', error);
+          toast.error('Something went wrong!');
+        })
       .finally(() => setIsLoading(false));
   } 
 
